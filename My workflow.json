@@ -1,0 +1,186 @@
+{
+  "name": "My workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=={{ $json.message.text }}",
+        "options": {
+          "systemMessage": "\"You are a helpful assistant. Always search and read data from the connected Google Sheet tool to answer questions about student Name, USN, and Message accurately.\""
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        112,
+        112
+      ],
+      "id": "eb8d0cef-3690-4a82-86f3-e3b30eddc65f",
+      "name": "AI Agent",
+      "retryOnFail": true
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-flash-latest",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1.1,
+      "position": [
+        -32,
+        208
+      ],
+      "id": "db3baeae-b29c-4a77-9bb3-78126a56d85e",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "yywjl3XmnR0earWT",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $(\"Telegram Trigger\").first().json.message.chat.id }}",
+        "text": "={{ $json.output }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        464,
+        112
+      ],
+      "id": "21ebac2a-3353-416d-9c06-c50a11563a53",
+      "name": "Send a text message",
+      "webhookId": "4e881bbe-6662-455a-b390-8c229e8a6111",
+      "retryOnFail": true,
+      "credentials": {
+        "telegramApi": {
+          "id": "KqVrUK6hkQthG8TR",
+          "name": "Telegram account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "updates": [
+          "message"
+        ],
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        -48,
+        16
+      ],
+      "id": "c132e2e2-f000-48e5-8997-4450b040c8b5",
+      "name": "Telegram Trigger",
+      "webhookId": "fbd0ee37-95cb-48b0-883f-86c77dde6c85",
+      "retryOnFail": true,
+      "credentials": {
+        "telegramApi": {
+          "id": "KqVrUK6hkQthG8TR",
+          "name": "Telegram account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "\"Get hotel menu items like Item Name, Category, Price, and Availability from Google Sheet\"",
+        "documentId": {
+          "__rl": true,
+          "value": "17MHJZ21M1Sa6MbffP1ljwSUV8TJ2U4hM4TVD20-qSgs",
+          "mode": "list",
+          "cachedResultName": " Restaurant Menu",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/17MHJZ21M1Sa6MbffP1ljwSUV8TJ2U4hM4TVD20-qSgs/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/17MHJZ21M1Sa6MbffP1ljwSUV8TJ2U4hM4TVD20-qSgs/edit#gid=0"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.7,
+      "position": [
+        272,
+        320
+      ],
+      "id": "472cc0b4-2127-4f74-805d-3c43e4d69124",
+      "name": "Get row(s) in sheet in Google Sheets",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "TOvLqgszQI5kBD1a",
+          "name": "Google Sheets account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Send a text message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Telegram Trigger": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet in Google Sheets": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "d35051c5-246e-4ec6-b351-82f938a886c3",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "e3a64b2dc6eb586cd8c76c66e7303d9c1df0f8120e9d151f7b33a71fac7c19fc"
+  },
+  "nodeGroups": [],
+  "id": "qAWJhVBzafYEyegp",
+  "tags": []
+}
