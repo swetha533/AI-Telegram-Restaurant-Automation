@@ -60,15 +60,27 @@ Telegram Response
 
 ## 🖥️ Workflow Screenshot
 
-![Workflow](images/workflow.png)
+![Workflow](workflow.png)
 
 ---
 
-## 📱 Telegram Bot Demo
+## Telegram Bot Demo
 
-![Chat 1](images/chat1.png)
+### Welcome Message
 
-![Chat 2](images/chat2.png)
+![Welcome](welcome.jpeg)
+
+### Menu Response
+
+![Menu](menu.png)
+
+### Order & Confirmation
+
+![Order](order.png)
+
+### Final Confirmation
+
+![Confirm](confirm.png)
 
 ---
 
