@@ -60,7 +60,7 @@ Telegram Response
 
 ## 🖥️ Workflow Screenshot
 
-![Workflow](workflow.png)
+![Workflow](Workflow.png)
 
 ---
 
